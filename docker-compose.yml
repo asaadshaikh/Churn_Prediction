@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app/app.py
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/churn_db
+      - REDIS_URL=redis://redis:6379/0
+      - MODEL_PATH=/app/models/trained/model.pkl
+    volumes:
+      - .:/app
+      - model_data:/app/models
+    depends_on:
+      - db
+      - redis
+      - celery
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=churn_db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A app.celery_worker.celery worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+
+  mlflow:
+    build: .
+    command: mlflow server --host 0.0.0.0
+    ports:
+      - "5001:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    environment:
+      - MLFLOW_TRACKING_URI=/mlflow
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  postgres_data:
+  model_data:
+  mlflow_data:
+  prometheus_data:
+  grafana_data: 
