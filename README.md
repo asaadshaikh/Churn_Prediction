@@ -2,7 +2,6 @@
 
 A machine learning project to predict customer churn for a subscription-based business with a beautiful interactive dashboard.
 
-![Churn Prediction Dashboard](https://user-images.githubusercontent.com/your-username/churn-prediction/main/screenshots/dashboard.png)
 
 ## Project Overview
 
