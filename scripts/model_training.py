@@ -7,14 +7,17 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, classification_report, confusion_matrix
 import pickle
 from data_processing import load_data, preprocess_data
+from sklearn.utils import class_weight
+import numpy as np
 
-def train_model(X_train, y_train):
+def train_model(X_train, y_train, class_weights=None):
     """
     Train a Random Forest model on the given data
     
     Args:
         X_train: Preprocessed feature data
         y_train: Target variable data
+        class_weights: Dictionary of class weights for handling imbalanced data
         
     Returns:
         Trained model
@@ -25,7 +28,8 @@ def train_model(X_train, y_train):
         max_depth=10,
         min_samples_split=5,
         min_samples_leaf=2,
-        random_state=42
+        random_state=42,
+        class_weight=class_weights
     )
     model.fit(X_train, y_train)
     return model
@@ -62,10 +66,31 @@ if __name__ == "__main__":
     print("Features and target separated.")
     X_preprocessed, preprocessor = preprocess_data(X)
     print("Data preprocessed.")
-    X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y, test_size=0.2, random_state=42)
-    print("Data split into train and test.")
+    X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y, test_size=0.2, random_state=42, stratify=y)
+    print("Data split into train and test (stratified).")
 
-    model = train_model(X_train, y_train)
+    # Check class distribution
+    print("\nClass distribution in training set:")
+    y_train_counts = pd.Series(y_train).value_counts(normalize=True)
+    print(y_train_counts)
+    
+    # Calculate class weights to handle imbalance
+    unique_classes = np.unique(y_train)
+    if len(unique_classes) > 1:
+        print("\nCalculating class weights to handle imbalance...")
+        if isinstance(unique_classes[0], str):
+            # For string labels
+            class_weights = class_weight.compute_class_weight('balanced', classes=unique_classes, y=y_train)
+            class_weights_dict = {unique_classes[i]: class_weights[i] for i in range(len(unique_classes))}
+        else:
+            # For numeric labels
+            class_weights_dict = 'balanced'
+        print(f"Class weights: {class_weights_dict}")
+    else:
+        class_weights_dict = None
+        print("Warning: Only one class found in training data!")
+
+    model = train_model(X_train, y_train, class_weights=class_weights_dict)
     print("Model trained.")
 
     # Evaluate the model
@@ -96,6 +121,33 @@ if __name__ == "__main__":
 
     print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
     print("Classification Report:\n", classification_report(y_test, y_pred))
+
+    # Feature importance
+    if hasattr(model, 'feature_importances_'):
+        # Get feature names
+        feature_names = []
+        for name, transformer, columns in preprocessor.transformers_:
+            if hasattr(transformer, 'get_feature_names_out'):
+                try:
+                    # For newer sklearn versions
+                    transformed_names = transformer.get_feature_names_out(columns)
+                    feature_names.extend(transformed_names)
+                except:
+                    # Fallback for older versions or other transformers
+                    for col in columns:
+                        feature_names.append(f"{name}_{col}")
+            else:
+                for col in columns:
+                    feature_names.append(f"{name}_{col}")
+                    
+        # Display top 10 feature importances
+        importances = pd.DataFrame({
+            'feature': feature_names[:len(model.feature_importances_)],
+            'importance': model.feature_importances_
+        })
+        importances = importances.sort_values('importance', ascending=False).head(10)
+        print("\nTop 10 features by importance:")
+        print(importances)
 
     # Save the model and preprocessor
     models_dir = os.path.join(project_dir, 'models')

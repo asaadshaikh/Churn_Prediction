@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Churn Prediction{% endblock %}
+
+{% block page_title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Customer Churn Prediction</h6>
+            </div>
+            <div class="card-body">
+                <p>This application predicts customer churn for a subscription-based business. By identifying customers who are likely to cancel their subscriptions, businesses can take proactive measures to retain them.</p>
+                
+                <h5 class="font-weight-bold text-dark mt-4">How it works</h5>
+                <p>Our model analyzes various customer attributes such as:</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle text-success me-2"></i> Usage patterns</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i> Billing information</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i> Contract details</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check-circle text-success me-2"></i> Service subscriptions</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i> Customer demographics</li>
+                            <li><i class="fas fa-check-circle text-success me-2"></i> Support interactions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i> Our machine learning model has been trained on historical data and achieves high accuracy in identifying at-risk customers.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-3">
+                    <a href="/predict-form" class="btn btn-primary btn-lg">
+                        <i class="fas fa-calculator me-2"></i> Make a Prediction
+                    </a>
+                    <a href="/dashboard" class="btn btn-info btn-lg text-white">
+                        <i class="fas fa-tachometer-alt me-2"></i> View Dashboard
+                    </a>
+                    <a href="/api-docs" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-book me-2"></i> API Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Model Performance</h6>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6 mb-3">
+                        <h2 class="text-primary">85%</h2>
+                        <div class="small text-dark">Accuracy</div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <h2 class="text-warning">80%</h2>
+                        <div class="small text-dark">Precision</div>
+                    </div>
+                    <div class="col-6">
+                        <h2 class="text-info">75%</h2>
+                        <div class="small text-dark">Recall</div>
+                    </div>
+                    <div class="col-6">
+                        <h2 class="text-success">77%</h2>
+                        <div class="small text-dark">F1 Score</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Getting Started</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-user-check fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">Predict Churn</h5>
+                                <p class="card-text">Use our web interface to predict churn for individual customers.</p>
+                                <a href="/predict-form" class="btn btn-primary btn-sm">Try It</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">API Integration</h5>
+                                <p class="card-text">Integrate churn predictions into your own applications via API.</p>
+                                <a href="/api-docs" class="btn btn-primary btn-sm">View Docs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title">Monitor Metrics</h5>
+                                <p class="card-text">Track your churn rates and prediction accuracy over time.</p>
+                                <a href="/dashboard" class="btn btn-primary btn-sm">View Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
