@@ -1,0 +1,482 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - Churn Prediction{% endblock %}
+
+{% block page_title %}API Documentation{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">API Overview</h6>
+            </div>
+            <div class="card-body">
+                <p>The Churn Prediction API allows you to predict customer churn probability programmatically. This documentation provides details on available endpoints, request formats, and example responses.</p>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i> Base URL: <code>http://localhost:5000</code> (or your server address)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Endpoints</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="accordion" id="apiAccordion">
+                    <!-- Predict Endpoint -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="predictHeading">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#predictCollapse" aria-expanded="true" aria-controls="predictCollapse">
+                                <span class="badge bg-primary me-2">POST</span> /predict
+                            </button>
+                        </h2>
+                        <div id="predictCollapse" class="accordion-collapse collapse show" aria-labelledby="predictHeading" data-bs-parent="#apiAccordion">
+                            <div class="accordion-body">
+                                <h5 class="text-dark">Description</h5>
+                                <p>Predicts the probability of customer churn based on customer attributes.</p>
+                                
+                                <h5 class="text-dark mt-4">Request Format</h5>
+                                <p>Send a POST request with the following customer data as JSON:</p>
+                                
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                        <span>Request JSON</span>
+                                        <button class="btn btn-sm btn-outline-primary copy-btn" data-clipboard-target="#predictRequestJson">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre id="predictRequestJson" class="mb-0"><code>{
+  "tenure": 24,
+  "MonthlyCharges": 65.5,
+  "TotalCharges": 1556.7,
+  "gender": "Male",
+  "SeniorCitizen": 0,
+  "Partner": "Yes",
+  "Dependents": "No",
+  "PhoneService": "Yes",
+  "MultipleLines": "No",
+  "InternetService": "Fiber optic",
+  "OnlineSecurity": "No",
+  "OnlineBackup": "Yes",
+  "DeviceProtection": "No",
+  "TechSupport": "No",
+  "StreamingTV": "Yes",
+  "StreamingMovies": "Yes",
+  "Contract": "Month-to-month",
+  "PaperlessBilling": "Yes",
+  "PaymentMethod": "Electronic check"
+}</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <h5 class="text-dark mt-4">Response Format</h5>
+                                <p>The API returns a JSON response with the prediction result:</p>
+                                
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                        <span>Response JSON</span>
+                                        <button class="btn btn-sm btn-outline-primary copy-btn" data-clipboard-target="#predictResponseJson">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre id="predictResponseJson" class="mb-0"><code>{
+  "churn_prediction": "Yes",
+  "churn_probability": 0.85,
+  "timestamp": "2025-03-15 06:30:45"
+}</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <h5 class="text-dark mt-4">Required Fields</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Field</th>
+                                                <th>Type</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>tenure</td>
+                                                <td>Number</td>
+                                                <td>Number of months the customer has been with the company</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MonthlyCharges</td>
+                                                <td>Number</td>
+                                                <td>The amount charged to the customer monthly</td>
+                                            </tr>
+                                            <tr>
+                                                <td>TotalCharges</td>
+                                                <td>Number</td>
+                                                <td>The total amount charged to the customer</td>
+                                            </tr>
+                                            <tr>
+                                                <td>gender</td>
+                                                <td>String</td>
+                                                <td>"Male" or "Female"</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SeniorCitizen</td>
+                                                <td>Number</td>
+                                                <td>0 or 1 (1 for senior citizens)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Partner</td>
+                                                <td>String</td>
+                                                <td>"Yes" or "No"</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Contract</td>
+                                                <td>String</td>
+                                                <td>"Month-to-month", "One year", or "Two year"</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PaperlessBilling</td>
+                                                <td>String</td>
+                                                <td>"Yes" or "No"</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PaymentMethod</td>
+                                                <td>String</td>
+                                                <td>Payment method used by the customer</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <h5 class="text-dark mt-4">Example Code</h5>
+                                <ul class="nav nav-tabs" id="predictTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="python-tab" data-bs-toggle="tab" data-bs-target="#python" type="button" role="tab" aria-controls="python" aria-selected="true">Python</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="javascript-tab" data-bs-toggle="tab" data-bs-target="#javascript" type="button" role="tab" aria-controls="javascript" aria-selected="false">JavaScript</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="curl-tab" data-bs-toggle="tab" data-bs-target="#curl" type="button" role="tab" aria-controls="curl" aria-selected="false">cURL</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content p-3 border border-top-0 rounded-bottom" id="predictTabsContent">
+                                    <div class="tab-pane fade show active" id="python" role="tabpanel" aria-labelledby="python-tab">
+                                        <pre><code>import requests
+import json
+
+# Customer data
+data = {
+    "tenure": 24,
+    "MonthlyCharges": 65.5,
+    "TotalCharges": 1556.7,
+    "gender": "Male",
+    "SeniorCitizen": 0,
+    "Partner": "Yes",
+    "Dependents": "No",
+    "PhoneService": "Yes",
+    "MultipleLines": "No",
+    "InternetService": "Fiber optic",
+    "OnlineSecurity": "No",
+    "OnlineBackup": "Yes",
+    "DeviceProtection": "No",
+    "TechSupport": "No",
+    "StreamingTV": "Yes",
+    "StreamingMovies": "Yes",
+    "Contract": "Month-to-month",
+    "PaperlessBilling": "Yes",
+    "PaymentMethod": "Electronic check"
+}
+
+# Make API request
+response = requests.post(
+    'http://localhost:5000/predict',
+    headers={'Content-Type': 'application/json'},
+    data=json.dumps(data)
+)
+
+# Print result
+result = response.json()
+print(f"Churn Prediction: {result['churn_prediction']}")
+print(f"Probability: {result['churn_probability'] * 100:.2f}%")
+</code></pre>
+                                    </div>
+                                    <div class="tab-pane fade" id="javascript" role="tabpanel" aria-labelledby="javascript-tab">
+                                        <pre><code>// Customer data
+const data = {
+    "tenure": 24,
+    "MonthlyCharges": 65.5,
+    "TotalCharges": 1556.7,
+    "gender": "Male",
+    "SeniorCitizen": 0,
+    "Partner": "Yes",
+    "Dependents": "No",
+    "PhoneService": "Yes",
+    "MultipleLines": "No",
+    "InternetService": "Fiber optic",
+    "OnlineSecurity": "No",
+    "OnlineBackup": "Yes",
+    "DeviceProtection": "No",
+    "TechSupport": "No",
+    "StreamingTV": "Yes",
+    "StreamingMovies": "Yes",
+    "Contract": "Month-to-month",
+    "PaperlessBilling": "Yes",
+    "PaymentMethod": "Electronic check"
+};
+
+// Make API request
+fetch('http://localhost:5000/predict', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(result => {
+    console.log(`Churn Prediction: ${result.churn_prediction}`);
+    console.log(`Probability: ${(result.churn_probability * 100).toFixed(2)}%`);
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+</code></pre>
+                                    </div>
+                                    <div class="tab-pane fade" id="curl" role="tabpanel" aria-labelledby="curl-tab">
+                                        <pre><code>curl -X POST http://localhost:5000/predict \
+-H "Content-Type: application/json" \
+-d '{
+    "tenure": 24,
+    "MonthlyCharges": 65.5,
+    "TotalCharges": 1556.7,
+    "gender": "Male",
+    "SeniorCitizen": 0,
+    "Partner": "Yes",
+    "Dependents": "No",
+    "PhoneService": "Yes",
+    "MultipleLines": "No",
+    "InternetService": "Fiber optic",
+    "OnlineSecurity": "No",
+    "OnlineBackup": "Yes",
+    "DeviceProtection": "No",
+    "TechSupport": "No",
+    "StreamingTV": "Yes",
+    "StreamingMovies": "Yes",
+    "Contract": "Month-to-month",
+    "PaperlessBilling": "Yes",
+    "PaymentMethod": "Electronic check"
+}'</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Health Endpoint -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="healthHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#healthCollapse" aria-expanded="false" aria-controls="healthCollapse">
+                                <span class="badge bg-success me-2">GET</span> /health
+                            </button>
+                        </h2>
+                        <div id="healthCollapse" class="accordion-collapse collapse" aria-labelledby="healthHeading" data-bs-parent="#apiAccordion">
+                            <div class="accordion-body">
+                                <h5 class="text-dark">Description</h5>
+                                <p>Returns the health status of the API, including whether the model and preprocessor are loaded.</p>
+                                
+                                <h5 class="text-dark mt-4">Response Format</h5>
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                        <span>Response JSON</span>
+                                        <button class="btn btn-sm btn-outline-primary copy-btn" data-clipboard-target="#healthResponseJson">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre id="healthResponseJson" class="mb-0"><code>{
+  "status": "healthy",
+  "model_loaded": true,
+  "preprocessor_loaded": true,
+  "timestamp": "2025-03-15T06:30:45.123456"
+}</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <h5 class="text-dark mt-4">Example Code</h5>
+                                <pre><code>import requests
+
+response = requests.get('http://localhost:5000/health')
+status = response.json()
+
+if status['status'] == 'healthy' and status['model_loaded'] and status['preprocessor_loaded']:
+    print("API is healthy and ready for predictions")
+else:
+    print("API is not fully operational")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sample Endpoint -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="sampleHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sampleCollapse" aria-expanded="false" aria-controls="sampleCollapse">
+                                <span class="badge bg-success me-2">GET</span> /sample
+                            </button>
+                        </h2>
+                        <div id="sampleCollapse" class="accordion-collapse collapse" aria-labelledby="sampleHeading" data-bs-parent="#apiAccordion">
+                            <div class="accordion-body">
+                                <h5 class="text-dark">Description</h5>
+                                <p>Returns a sample customer data payload that can be used for testing the prediction endpoint.</p>
+                                
+                                <h5 class="text-dark mt-4">Response Format</h5>
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                                        <span>Response JSON</span>
+                                        <button class="btn btn-sm btn-outline-primary copy-btn" data-clipboard-target="#sampleResponseJson">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <pre id="sampleResponseJson" class="mb-0"><code>{
+  "customerID": "SAMPLE-001",
+  "tenure": 24,
+  "MonthlyCharges": 65.5,
+  "TotalCharges": 1556.7,
+  "gender": "Male",
+  "SeniorCitizen": 0,
+  "Partner": "Yes",
+  "Dependents": "No",
+  "PhoneService": "Yes",
+  "MultipleLines": "No",
+  "InternetService": "Fiber optic",
+  "OnlineSecurity": "No",
+  "OnlineBackup": "Yes",
+  "DeviceProtection": "No",
+  "TechSupport": "No",
+  "StreamingTV": "Yes",
+  "StreamingMovies": "Yes",
+  "Contract": "Month-to-month",
+  "PaperlessBilling": "Yes",
+  "PaymentMethod": "Electronic check"
+}</code></pre>
+                                    </div>
+                                </div>
+                                
+                                <h5 class="text-dark mt-4">Example Code</h5>
+                                <pre><code>import requests
+import json
+
+# Get sample data
+sample_response = requests.get('http://localhost:5000/sample')
+sample_data = sample_response.json()
+
+# Make prediction with the sample data
+prediction_response = requests.post(
+    'http://localhost:5000/predict',
+    headers={'Content-Type': 'application/json'},
+    data=json.dumps(sample_data)
+)
+
+result = prediction_response.json()
+print(f"Churn Prediction: {result['churn_prediction']}")
+print(f"Probability: {result['churn_probability'] * 100:.2f}%")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Error Handling</h6>
+            </div>
+            <div class="card-body">
+                <p>The API returns error responses in the following format:</p>
+                
+                <div class="card bg-light mb-3">
+                    <div class="card-header py-2">Error Response JSON</div>
+                    <div class="card-body">
+                        <pre class="mb-0"><code>{
+  "error": "Error message describing what went wrong",
+  "details": "Additional details about the error (optional)"
+}</code></pre>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4 text-dark">Common HTTP Status Codes</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Status Code</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>200 OK</td>
+                                <td>Request was successful</td>
+                            </tr>
+                            <tr>
+                                <td>400 Bad Request</td>
+                                <td>Invalid input data or missing required fields</td>
+                            </tr>
+                            <tr>
+                                <td>500 Internal Server Error</td>
+                                <td>Server-side error, such as model loading issue</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Handle copy buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-clipboard-target');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Create a text area to copy from
+                    const textArea = document.createElement('textarea');
+                    textArea.value = targetElement.textContent;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    // Change button text temporarily
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
