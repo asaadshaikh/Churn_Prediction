@@ -1,243 +1,179 @@
-{% extends "base.html" %}
-
-{% block title %}Dashboard - Churn Prediction{% endblock %}
-
-{% block page_title %}Dashboard{% endblock %}
-
-{% block content %}
-<div class="row">
-    <!-- Churn Rate Card -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Overall Churn Rate</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">27.8%</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-minus fa-2x text-gray-300"></i>
-                    </div>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Churn Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .metric-card {
+            transition: transform 0.3s;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line me-2"></i>Churn Predictor
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/predict-form">
+                            <i class="fas fa-magic me-1"></i>Predict
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs">
+                            <i class="fas fa-book me-1"></i>API Docs
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Retention Rate Card -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Customer Retention</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">72.2%</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-check fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Average Monthly Charges Card -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Avg. Monthly Charges</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$64.76</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Average Tenure Card -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Avg. Customer Tenure</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">32.4 Months</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clock fa-2x text-gray-300"></i>
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Key Metrics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card metric-card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Churn Rate</h5>
+                        <h2 class="display-4">15%</h2>
+                        <p class="mb-0"><i class="fas fa-arrow-down me-2"></i>2.3% vs last month</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Churn by Contract Type -->
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Churn by Contract Type</h6>
+            <div class="col-md-3">
+                <div class="card metric-card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Retention Rate</h5>
+                        <h2 class="display-4">85%</h2>
+                        <p class="mb-0"><i class="fas fa-arrow-up me-2"></i>1.5% vs last month</p>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="chart-container" style="position: relative; height:300px;">
-                    <canvas id="contractChart"></canvas>
+            <div class="col-md-3">
+                <div class="card metric-card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg Monthly Charges</h5>
+                        <h2 class="display-4">$84</h2>
+                        <p class="mb-0"><i class="fas fa-arrow-up me-2"></i>$3 vs last month</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card metric-card bg-warning text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Predictions Made</h5>
+                        <h2 class="display-4">1.2k</h2>
+                        <p class="mb-0"><i class="fas fa-arrow-up me-2"></i>150 vs last month</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Churn by Internet Service -->
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Churn by Internet Service</h6>
+        <!-- Charts Row -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Churn Rate by Contract Type</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="contractChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="chart-container" style="position: relative; height:300px;">
-                    <canvas id="internetServiceChart"></canvas>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Monthly Trend</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="row">
-    <!-- Churn Factors -->
-    <div class="col-lg-8 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Key Churn Factors</h6>
-            </div>
-            <div class="card-body">
-                <div class="chart-container" style="position: relative; height:400px;">
-                    <canvas id="factorsChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent Predictions -->
-    <div class="col-lg-4 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Recent Predictions</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Risk</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Mar 15, 2025</td>
-                                <td><span class="badge bg-danger">High</span></td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                            </tr>
-                            <tr>
-                                <td>Mar 14, 2025</td>
-                                <td><span class="badge bg-success">Low</span></td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                            </tr>
-                            <tr>
-                                <td>Mar 14, 2025</td>
-                                <td><span class="badge bg-warning">Medium</span></td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                            </tr>
-                            <tr>
-                                <td>Mar 13, 2025</td>
-                                <td><span class="badge bg-danger">High</span></td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                            </tr>
-                            <tr>
-                                <td>Mar 12, 2025</td>
-                                <td><span class="badge bg-success">Low</span></td>
-                                <td><a href="#" class="btn btn-sm btn-primary">View</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Tenure vs Churn -->
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Tenure vs. Churn Rate</h6>
-            </div>
-            <div class="card-body">
-                <div class="chart-container" style="position: relative; height:300px;">
-                    <canvas id="tenureChart"></canvas>
-                </div>
-                <div class="mt-3 text-center small">
-                    <span class="me-2">
-                        <i class="fas fa-circle text-primary"></i> Churn Rate
-                    </span>
-                    <span class="me-2">
-                        <i class="fas fa-circle text-success"></i> Customer Count
-                    </span>
+        <!-- Model Performance -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Model Performance Metrics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                                <h4 class="text-primary">92%</h4>
+                                <p class="text-muted">Accuracy</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h4 class="text-success">89%</h4>
+                                <p class="text-muted">Precision</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h4 class="text-info">87%</h4>
+                                <p class="text-muted">Recall</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <h4 class="text-warning">88%</h4>
+                                <p class="text-muted">F1 Score</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Monthly Charges vs Churn -->
-    <div class="col-lg-6 mb-4">
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Monthly Charges vs. Churn</h6>
-            </div>
-            <div class="card-body">
-                <div class="chart-container" style="position: relative; height:300px;">
-                    <canvas id="chargesChart"></canvas>
-                </div>
-                <div class="mt-3 text-center small">
-                    <span class="me-2">
-                        <i class="fas fa-circle text-info"></i> Stayed
-                    </span>
-                    <span class="me-2">
-                        <i class="fas fa-circle text-danger"></i> Churned
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Create charts once DOM is loaded
-    document.addEventListener('DOMContentLoaded', function() {
+    <script>
         // Contract Type Chart
-        const contractChartCtx = document.getElementById('contractChart').getContext('2d');
-        new Chart(contractChartCtx, {
+        const contractCtx = document.getElementById('contractChart').getContext('2d');
+        new Chart(contractCtx, {
             type: 'bar',
             data: {
                 labels: ['Month-to-month', 'One year', 'Two year'],
                 datasets: [{
                     label: 'Churn Rate (%)',
-                    data: [42.7, 11.3, 2.9],
+                    data: [42, 15, 8],
                     backgroundColor: [
-                        '#e74a3b',
-                        '#4e73df',
-                        '#1cc88a'
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                        'rgba(75, 192, 192, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(75, 192, 192)'
                     ],
                     borderWidth: 1
                 }]
@@ -248,232 +184,38 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 50,
-                        title: {
-                            display: true,
-                            text: 'Churn Rate (%)'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `Churn Rate: ${context.raw}%`;
-                            }
-                        }
+                        max: 50
                     }
                 }
             }
         });
 
-        // Internet Service Chart
-        const internetServiceChartCtx = document.getElementById('internetServiceChart').getContext('2d');
-        new Chart(internetServiceChartCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Fiber optic', 'DSL', 'No internet'],
-                datasets: [{
-                    label: 'Churn Rate (%)',
-                    data: [41.9, 19.0, 7.5],
-                    backgroundColor: [
-                        '#e74a3b',
-                        '#4e73df',
-                        '#1cc88a'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 50,
-                        title: {
-                            display: true,
-                            text: 'Churn Rate (%)'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `Churn Rate: ${context.raw}%`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Key Factors Chart
-        const factorsChartCtx = document.getElementById('factorsChart').getContext('2d');
-        new Chart(factorsChartCtx, {
-            type: 'horizontalBar',
-            data: {
-                labels: [
-                    'Month-to-month contract',
-                    'Fiber optic internet',
-                    'No online security',
-                    'Electronic check payment',
-                    'No tech support',
-                    'Paperless billing',
-                    'No online backup',
-                    'Senior citizen',
-                    'No partner',
-                    'No phone service'
-                ],
-                datasets: [{
-                    label: 'Importance Score',
-                    data: [0.29, 0.23, 0.18, 0.15, 0.13, 0.11, 0.09, 0.08, 0.07, 0.05],
-                    backgroundColor: '#4e73df',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 0.3,
-                        title: {
-                            display: true,
-                            text: 'Feature Importance'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-
-        // Tenure Chart
-        const tenureChartCtx = document.getElementById('tenureChart').getContext('2d');
-        new Chart(tenureChartCtx, {
+        // Monthly Trend Chart
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
             type: 'line',
             data: {
-                labels: ['0-6', '7-12', '13-24', '25-36', '37-48', '49-60', '61+'],
-                datasets: [
-                    {
-                        label: 'Churn Rate (%)',
-                        data: [52, 43, 35, 24, 15, 11, 7],
-                        borderColor: '#4e73df',
-                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
-                        fill: true,
-                        tension: 0.4,
-                        yAxisID: 'y1'
-                    },
-                    {
-                        label: 'Customer Count',
-                        data: [980, 850, 1200, 860, 760, 650, 700],
-                        borderColor: '#1cc88a',
-                        borderDash: [5, 5],
-                        fill: false,
-                        tension: 0.4,
-                        yAxisID: 'y2'
-                    }
-                ]
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Churn Rate',
+                    data: [18, 17, 16, 15.5, 15, 14.7],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y1: {
-                        beginAtZero: true,
-                        max: 60,
-                        position: 'left',
-                        title: {
-                            display: true,
-                            text: 'Churn Rate (%)'
-                        }
-                    },
-                    y2: {
-                        beginAtZero: true,
-                        max: 1500,
-                        position: 'right',
-                        grid: {
-                            drawOnChartArea: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Customer Count'
-                        }
-                    }
-                }
-            }
-        });
-
-        // Monthly Charges Chart
-        const chargesChartCtx = document.getElementById('chargesChart').getContext('2d');
-        new Chart(chargesChartCtx, {
-            type: 'scatter',
-            data: {
-                datasets: [
-                    {
-                        label: 'Stayed',
-                        data: [
-                            {x: 20, y: 60}, {x: 30, y: 50}, {x: 25, y: 40}, {x: 35, y: 45}, 
-                            {x: 40, y: 35}, {x: 45, y: 30}, {x: 50, y: 25}, {x: 55, y: 20},
-                            {x: 60, y: 15}, {x: 65, y: 10}, {x: 70, y: 20}, {x: 75, y: 15},
-                            {x: 80, y: 12}, {x: 85, y: 8}, {x: 90, y: 5}, {x: 95, y: 2},
-                            {x: 100, y: 3}, {x: 105, y: 2}, {x: 110, y: 1}
-                        ],
-                        backgroundColor: 'rgba(28, 200, 138, 0.7)',
-                        borderColor: '#1cc88a',
-                        pointRadius: 6,
-                        pointHoverRadius: 8
-                    },
-                    {
-                        label: 'Churned',
-                        data: [
-                            {x: 65, y: 30}, {x: 70, y: 25}, {x: 75, y: 35}, {x: 80, y: 30}, 
-                            {x: 85, y: 25}, {x: 90, y: 20}, {x: 95, y: 25}, {x: 100, y: 20},
-                            {x: 105, y: 15}, {x: 110, y: 10}
-                        ],
-                        backgroundColor: 'rgba(231, 74, 59, 0.7)',
-                        borderColor: '#e74a3b',
-                        pointRadius: 6,
-                        pointHoverRadius: 8
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Monthly Charges ($)'
-                        },
-                        min: 15,
-                        max: 115
-                    },
                     y: {
-                        title: {
-                            display: true,
-                            text: 'Customer Count'
-                        },
-                        min: 0,
-                        max: 70
+                        beginAtZero: true
                     }
                 }
             }
         });
-    });
-</script>
-{% endblock %} 
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

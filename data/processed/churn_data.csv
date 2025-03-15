@@ -1,0 +1,11 @@
+CustomerID,Tenure,MonthlyCharges,TotalCharges,InternetService,Contract,PaymentMethod,OnlineSecurity,TechSupport,Churn
+1,12,89.90,1078.80,Fiber optic,Month-to-month,Electronic check,No,No,1
+2,36,56.95,2050.20,DSL,One year,Credit card,Yes,Yes,0
+3,24,73.20,1756.80,Fiber optic,Month-to-month,Bank transfer,No,No,1
+4,48,104.80,5030.40,Fiber optic,Two year,Credit card,Yes,Yes,0
+5,3,45.50,136.50,DSL,Month-to-month,Electronic check,No,No,1
+6,60,98.45,5907.00,Fiber optic,Two year,Bank transfer,Yes,Yes,0
+7,18,82.30,1481.40,Fiber optic,One year,Electronic check,No,Yes,1
+8,72,110.25,7938.00,Fiber optic,Two year,Credit card,Yes,Yes,0
+9,6,65.75,394.50,DSL,Month-to-month,Electronic check,No,No,1
+10,24,95.60,2294.40,Fiber optic,One year,Bank transfer,Yes,No,0 
